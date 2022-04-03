@@ -1,17 +1,30 @@
-import * as React from 'react'
-import { Link } from 'gatsby'
-import Layout from '../components/layout.js'
+import * as React from 'react';
+import { Link, graphql } from 'gatsby';
+import { GatsbyImage, getImage } from 'gatsby-plugin-image';
+import Layout from '../components/layout.js';
 
-const AboutPage = () => {
-    return (
-        <Layout
-            title="about this site"
-            description="more about this site"
-        >
-            <h1>About Page</h1>
-            <Link to="/">Go back to home</Link>
-        </Layout>
-    )
-}
+export const query = graphql`
+  query CocktailQuery {
+    file(name: { eq: "cocktail" }) {
+      id
+      childImageSharp {
+        gatsbyImageData(placeholder: DOMINANT_COLOR)
+      }
+    }
+  }
+`;
+const AboutPage = ({ data }) => {
+  console.log('data ', data);
+  return (
+    <Layout title="about this site" description="more about this site">
+      <GatsbyImage
+        image={getImage(data.file)}
+        alt="a cocktail in a floral arangement"
+      />
+      <h1>About Page</h1>
+      <Link to="/">Go back to home</Link>
+    </Layout>
+  );
+};
 
-export default AboutPage
+export default AboutPage;
